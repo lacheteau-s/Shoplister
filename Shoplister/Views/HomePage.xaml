@@ -5,10 +5,19 @@
              x:Class="Shoplister.Views.HomePage">
 
     <Grid>
-        <CollectionView>
+        <CollectionView ItemsSource="{Binding Items}"
+                        ItemSizingStrategy="MeasureFirstItem">
+            
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <components:ItemView />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
             <CollectionView.EmptyView>
                 <components:EmptyView />
             </CollectionView.EmptyView>
+            
         </CollectionView>
     </Grid>
 

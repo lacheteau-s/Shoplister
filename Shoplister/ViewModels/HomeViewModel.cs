@@ -1,23 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using Shoplister.Models;
+using System.Collections.ObjectModel;
 
 namespace Shoplister.ViewModels;
 
 public partial class HomeViewModel : ObservableObject
 {
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CounterText))]
-    private int _count = 0;
+    private ObservableCollection<Item> _items;
 
-    public string CounterText => _count == 0
-        ? "Click me"
-        : $"Clicked {_count} time{(_count > 1 ? "s" : "")}";
-
-    [RelayCommand]
-    public void IncrementCounter()
+    public HomeViewModel()
     {
-        Count++;
-
-        SemanticScreenReader.Announce(CounterText);
+        Items = new ()
+        {
+            new () { Name = "Item 1", Quantity = 1 },
+            new () { Name = "Item 2", Quantity = 1 },
+            new () { Name = "Item 3", Quantity = 1 }
+        };
     }
 }
