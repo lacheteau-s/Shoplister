@@ -9,20 +9,34 @@
     </ContentPage.ToolbarItems>
 
     <Grid>
-        <CollectionView ItemsSource="{Binding Items}"
-                        ItemSizingStrategy="MeasureFirstItem">
+        <SwipeView>
             
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <components:ItemView />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            
-            <CollectionView.EmptyView>
-                <components:EmptyView />
-            </CollectionView.EmptyView>
-            
-        </CollectionView>
+            <CollectionView x:Name="collectionView"
+                            ItemsSource="{Binding Items}"
+                            ItemSizingStrategy="MeasureFirstItem">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem BackgroundColor="Green"
+                                               Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.CheckItemCommand}"
+                                               CommandParameter="{Binding}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <components:ItemView BackgroundColor="White" />
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <components:EmptyView />
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+        </SwipeView>
     </Grid>
 
 </ContentPage>

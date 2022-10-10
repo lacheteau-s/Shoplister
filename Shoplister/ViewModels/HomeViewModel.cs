@@ -18,7 +18,8 @@ public partial class HomeViewModel : ObservableObject
         var item = new Item
         {
             Name = $"Item {num + 1}",
-            Quantity = 1
+            Quantity = 1,
+            Checked = false
         };
 
         Items.Add(new ItemViewModel(item));
@@ -28,5 +29,14 @@ public partial class HomeViewModel : ObservableObject
     public void ClearItems()
     {
         Items.Clear();
+    }
+
+    [RelayCommand]
+    public void CheckItem(ItemViewModel item)
+    {
+        item.Checked = !item.Checked;
+
+        if (item.Checked)
+            Items.Move(Items.IndexOf(item), Items.Count - 1);
     }
 }

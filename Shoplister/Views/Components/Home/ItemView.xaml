@@ -7,7 +7,15 @@
 
         <CheckBox Grid.Column="0"
                   VerticalOptions="Center"
-                  HorizontalOptions="Center" />
+                  HorizontalOptions="Center"
+                  IsChecked="{Binding Checked}">
+            
+            <CheckBox.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.CheckItemCommand}"
+                                      CommandParameter="{Binding}"/>
+            </CheckBox.GestureRecognizers>
+            
+        </CheckBox>
 
         <Label Grid.Column="1"
                VerticalOptions="Center" 
