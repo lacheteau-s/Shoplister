@@ -18,7 +18,8 @@
                HorizontalTextAlignment="Center" />
 
         <Button Text="Add items"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center"
+                Command="{Binding AddItemsCommand}" />
 
     </VerticalStackLayout>
 
