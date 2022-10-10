@@ -25,6 +25,13 @@
                                                CommandParameter="{Binding}" />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem BackgroundColor="Red"
+                                               Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.DeleteItemCommand}"
+                                               CommandParameter="{Binding}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
 
                             <components:ItemView BackgroundColor="White" />
                         </SwipeView>

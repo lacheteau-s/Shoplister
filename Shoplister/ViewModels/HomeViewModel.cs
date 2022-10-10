@@ -39,4 +39,10 @@ public partial class HomeViewModel : ObservableObject
         if (item.Checked)
             Items.Move(Items.IndexOf(item), Items.Count - 1);
     }
+
+    [RelayCommand]
+    public void DeleteItem(ItemViewModel item)
+    {
+        Items.Remove(item);
+    }
 }
