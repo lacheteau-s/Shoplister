@@ -1,31 +1,27 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shoplister.Models;
+using Shoplister.Stores;
 using System.Collections.ObjectModel;
 
 namespace Shoplister.ViewModels;
 
 public partial class HomeViewModel : ObservableObject
 {
-    private readonly List<Item> _itemStore;
+    private readonly ItemStore _itemStore;
 
     [ObservableProperty]
     private ObservableCollection<ItemViewModel> _items = new ();
 
-    public HomeViewModel()
+    public HomeViewModel(ItemStore itemStore)
     {
-        _itemStore = new()
-        {
-            new () { Id = 1, Name = "Item 1", Quantity = 1, Checked = false },
-            new () { Id = 2, Name = "Item 2", Quantity = 1, Checked = false },
-            new () { Id = 3, Name = "Item 3", Quantity = 1, Checked = false }
-        };
+        _itemStore = itemStore;
     }
 
     [RelayCommand]
     public void LoadItems()
     {
-        var items = _itemStore.Select(m => new ItemViewModel(m)).ToList();
+        var items = _itemStore.GetItems().Select(m => new ItemViewModel(m)).ToList();
 
         Items = new (items);
     }
@@ -33,11 +29,10 @@ public partial class HomeViewModel : ObservableObject
     [RelayCommand]
     public void AddItems()
     {
-        var num = _itemStore.Any() ? _itemStore.Max(i => i.Id) : 0;
+        var num = Items.Any() ? Items.Max(i => i.Id) : 0;
 
         var item = new Item
         {
-            Id = num + 1,
             Name = $"Item {num + 1}",
             Quantity = 1,
             Checked = false
@@ -45,7 +40,7 @@ public partial class HomeViewModel : ObservableObject
 
         Items.Add(new ItemViewModel(item));
 
-        _itemStore.Add(item);
+        _itemStore.AddItem(item);
     }
 
     [RelayCommand]
@@ -53,7 +48,7 @@ public partial class HomeViewModel : ObservableObject
     {
         Items.Clear();
 
-        _itemStore.Clear();
+        _itemStore.DeleteItems();
     }
 
     [RelayCommand]
@@ -61,7 +56,10 @@ public partial class HomeViewModel : ObservableObject
     {
         item.Checked = !item.Checked;
 
-        _itemStore.Find(x => x.Id == item.Id).Checked = item.Checked;
+        var model = _itemStore.GetItem(item.Id);
+        model.Checked = item.Checked;
+
+        _itemStore.UpdateItem(model);
 
         if (item.Checked)
             Items.Move(Items.IndexOf(item), Items.Count - 1);
@@ -72,8 +70,8 @@ public partial class HomeViewModel : ObservableObject
     {
         Items.Remove(item);
 
-        var model = _itemStore.Find(x => x.Id == item.Id);
+        var model = _itemStore.GetItem(item.Id);
 
-        _itemStore.Remove(model);
+        _itemStore.DeleteItem(model);
     }
 }
