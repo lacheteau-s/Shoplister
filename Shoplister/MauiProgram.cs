@@ -1,4 +1,5 @@
-﻿using Shoplister.Configuration;
+﻿using CommunityToolkit.Maui;
+using Shoplister.Configuration;
 
 namespace Shoplister;
 
@@ -10,6 +11,7 @@ public static class MauiProgram
 
 		builder.UseMauiApp<App>()
 			.ConfigureMvvm()
+			.UseMauiCommunityToolkit()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

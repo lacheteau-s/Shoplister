@@ -10,6 +10,8 @@ public partial class ItemViewModel : ObservableObject
     [ObservableProperty]
     private bool _checked;
 
+    public int Id => _model.Id;
+
     public string Name => _model.Name;
 
     public int Quantity => _model.Quantity;
