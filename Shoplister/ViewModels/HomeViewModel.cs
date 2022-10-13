@@ -1,19 +1,38 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shoplister.Models;
+using Shoplister.Stores;
 using System.Collections.ObjectModel;
 
 namespace Shoplister.ViewModels;
 
 public partial class HomeViewModel : ObservableObject
 {
+    private readonly ItemStore _itemStore;
+
     [ObservableProperty]
     private ObservableCollection<ItemViewModel> _items = new ();
 
-    [RelayCommand]
-    public void AddItems()
+    public HomeViewModel(ItemStore itemStore)
     {
-        var num = Items.Any() ? Items.Max(i => int.Parse(i.Name.Split(" ").Last())) : 0;
+        _itemStore = itemStore;
+    }
+
+    [RelayCommand]
+    public async Task LoadItems()
+    {
+        var items = await _itemStore.GetItems();
+
+        Items = new (items
+            .Select(m => new ItemViewModel(m))
+            .OrderBy(m => m.Checked)
+            .ToList());
+    }
+
+    [RelayCommand]
+    public async Task AddItems()
+    {
+        var num = Items.Any() ? Items.Max(i => i.Id) : 0;
 
         var item = new Item
         {
@@ -23,26 +42,40 @@ public partial class HomeViewModel : ObservableObject
         };
 
         Items.Add(new ItemViewModel(item));
+
+        await _itemStore.AddItem(item);
     }
 
     [RelayCommand]
-    public void ClearItems()
+    public async Task ClearItems()
     {
         Items.Clear();
+
+        await _itemStore.DeleteItems();
     }
 
     [RelayCommand]
-    public void CheckItem(ItemViewModel item)
+    public async Task CheckItem(ItemViewModel item)
     {
         item.Checked = !item.Checked;
+
+        var model = await _itemStore.GetItem(item.Id);
+
+        model!.Checked = item.Checked;
+
+        await _itemStore.UpdateItem(model);
 
         if (item.Checked)
             Items.Move(Items.IndexOf(item), Items.Count - 1);
     }
 
     [RelayCommand]
-    public void DeleteItem(ItemViewModel item)
+    public async Task DeleteItem(ItemViewModel item)
     {
         Items.Remove(item);
+
+        var model = await _itemStore.GetItem(item.Id);
+
+        await _itemStore.DeleteItem(model!);
     }
 }
