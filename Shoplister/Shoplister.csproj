@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-android</TargetFrameworks>
+		<Nullable>enable</Nullable>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Shoplister</RootNamespace>
 		<UseMaui>true</UseMaui>

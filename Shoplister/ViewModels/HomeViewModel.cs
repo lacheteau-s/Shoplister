@@ -61,7 +61,7 @@ public partial class HomeViewModel : ObservableObject
 
         var model = await _itemStore.GetItem(item.Id);
 
-        model.Checked = item.Checked;
+        model!.Checked = item.Checked;
 
         await _itemStore.UpdateItem(model);
 
@@ -76,6 +76,6 @@ public partial class HomeViewModel : ObservableObject
 
         var model = await _itemStore.GetItem(item.Id);
 
-        await _itemStore.DeleteItem(model);
+        await _itemStore.DeleteItem(model!);
     }
 }
