@@ -1,7 +1,11 @@
-﻿namespace Shoplister.Models;
+﻿using SQLite;
 
+namespace Shoplister.Models;
+
+[Table("Items")]
 public record Item
 {
+    [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
     public string Name { get; set; }

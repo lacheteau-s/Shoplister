@@ -19,15 +19,18 @@ public partial class HomeViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void LoadItems()
+    public async Task LoadItems()
     {
-        var items = _itemStore.GetItems().Select(m => new ItemViewModel(m)).ToList();
+        var items = await _itemStore.GetItems();
 
-        Items = new (items);
+        Items = new (items
+            .Select(m => new ItemViewModel(m))
+            .OrderBy(m => m.Checked)
+            .ToList());
     }
 
     [RelayCommand]
-    public void AddItems()
+    public async Task AddItems()
     {
         var num = Items.Any() ? Items.Max(i => i.Id) : 0;
 
@@ -40,38 +43,39 @@ public partial class HomeViewModel : ObservableObject
 
         Items.Add(new ItemViewModel(item));
 
-        _itemStore.AddItem(item);
+        await _itemStore.AddItem(item);
     }
 
     [RelayCommand]
-    public void ClearItems()
+    public async Task ClearItems()
     {
         Items.Clear();
 
-        _itemStore.DeleteItems();
+        await _itemStore.DeleteItems();
     }
 
     [RelayCommand]
-    public void CheckItem(ItemViewModel item)
+    public async Task CheckItem(ItemViewModel item)
     {
         item.Checked = !item.Checked;
 
-        var model = _itemStore.GetItem(item.Id);
+        var model = await _itemStore.GetItem(item.Id);
+
         model.Checked = item.Checked;
 
-        _itemStore.UpdateItem(model);
+        await _itemStore.UpdateItem(model);
 
         if (item.Checked)
             Items.Move(Items.IndexOf(item), Items.Count - 1);
     }
 
     [RelayCommand]
-    public void DeleteItem(ItemViewModel item)
+    public async Task DeleteItem(ItemViewModel item)
     {
         Items.Remove(item);
 
-        var model = _itemStore.GetItem(item.Id);
+        var model = await _itemStore.GetItem(item.Id);
 
-        _itemStore.DeleteItem(model);
+        await _itemStore.DeleteItem(model);
     }
 }

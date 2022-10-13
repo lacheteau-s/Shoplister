@@ -1,6 +1,7 @@
 ﻿using Shoplister.Views;
 using Shoplister.ViewModels;
 using Shoplister.Stores;
+using SQLite;
 
 namespace Shoplister.Configuration;
 
@@ -25,6 +26,14 @@ internal static class Startup
 
     private static void RegisterServices(IServiceCollection services)
     {
+        services.AddSingleton<SQLiteAsyncConnection>(sp =>
+        {
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "shoplister.db3");
+            var flags = SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite;
+
+            return new SQLiteAsyncConnection(dbPath, flags);
+        });
+
         services.AddSingleton<ItemStore>();
     }
 }

@@ -1,65 +1,68 @@
 ﻿using Shoplister.Models;
+using SQLite;
 
 namespace Shoplister.Stores
 {
     public class ItemStore
     {
-        private readonly List<Item> _items;
+        private readonly SQLiteAsyncConnection _connection;
 
-        public ItemStore()
+        private readonly Task _initializer;
+
+        public ItemStore(SQLiteAsyncConnection connection)
         {
-            _items = new()
-            {
-                new () { Id = 1, Name = "Item 1", Quantity = 1, Checked = false },
-                new () { Id = 2, Name = "Item 2", Quantity = 1, Checked = false },
-                new () { Id = 3, Name = "Item 3", Quantity = 1, Checked = false }
-            };
+            _connection = connection;
+
+            _initializer = InitializeAsync();
         }
 
-        public Item? GetItem(int id)
+        private async Task InitializeAsync()
         {
-            var item = _items.Find(x => x.Id == id);
+            if (_initializer?.IsCompleted ?? false) return;
 
-            return new Item
-            {
-                Id = item.Id,
-                Name = item.Name,
-                Checked = item.Checked,
-                Quantity = item.Quantity
-            };
+            await _connection.CreateTableAsync<Item>();
         }
 
-        public IEnumerable<Item> GetItems()
+        public async Task<Item?> GetItem(int id)
         {
-            return _items.ToList();
+            await _initializer;
+
+            return await _connection.FindAsync<Item>(id);
         }
 
-        public void AddItem(Item item)
+        public async Task<IEnumerable<Item>> GetItems()
         {
-            var id = _items.Any() ? _items.Max(x => x.Id) : 0;
+            await _initializer;
 
-            item.Id = id + 1;
-
-            _items.Add(item);
+            return await _connection.Table<Item>().ToListAsync();
         }
 
-        public void UpdateItem(Item item)
+        public async Task<int> AddItem(Item item)
         {
-            var model = _items.Find(x => x.Id == item.Id);
+            await _initializer;
 
-            model.Name = item.Name;
-            model.Quantity = item.Quantity;
-            model.Checked = item.Checked;
+            return await _connection.InsertAsync(item);
         }
 
-        public void DeleteItem(Item item)
+        public async Task<int> UpdateItem(Item item)
         {
-            _items.Remove(item);
+            await _initializer;
+
+            return await _connection.UpdateAsync(item);
         }
 
-        public void DeleteItems()
+        public async Task<int> DeleteItem(Item item)
         {
-            _items.Clear();
+            await _initializer;
+
+            return await _connection.DeleteAsync(item);
+        }
+
+        public async Task<int> DeleteItems()
+        {
+            await _initializer;
+
+            return await _connection.DeleteAllAsync<Item>();
         }
     }
 }
