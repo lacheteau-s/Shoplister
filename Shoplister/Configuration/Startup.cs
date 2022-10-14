@@ -30,6 +30,9 @@ internal static class Startup
     {
         services.AddSingleton<HomePage>();
         services.AddSingleton<HomeViewModel>();
+
+        services.AddTransient<CatalogPage>();
+        services.AddTransient<CatalogViewModel>();
     }
 
     private static void RegisterServices(IServiceCollection services)
