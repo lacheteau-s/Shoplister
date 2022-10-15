@@ -40,7 +40,7 @@
                                 </SwipeItems>
                             </SwipeView.RightItems>
 
-                            <components:ItemView BackgroundColor="White" />
+                            <components:HomeItemView BackgroundColor="White" />
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

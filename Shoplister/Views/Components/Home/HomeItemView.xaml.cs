@@ -1,8 +1,8 @@
 namespace Shoplister.Views.Components;
 
-public partial class ItemView : ContentView
+public partial class HomeItemView : ContentView
 {
-	public ItemView()
+	public HomeItemView()
 	{
 		InitializeComponent();
 	}
