@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Shoplister.Models;
 using Shoplister.Stores;
 using System.Collections.ObjectModel;
 
@@ -11,7 +10,7 @@ public partial class CatalogViewModel : ObservableObject
     private readonly ItemStore _itemStore;
 
     [ObservableProperty]
-    private ObservableCollection<Item> _items = new();
+    private ObservableCollection<CatalogItemViewModel> _items = new();
 
     public CatalogViewModel(ItemStore itemStore)
     {
@@ -23,6 +22,9 @@ public partial class CatalogViewModel : ObservableObject
     {
         var items = await _itemStore.GetItems();
 
-        Items = new ObservableCollection<Item>(items);
+        Items = new (items
+            .Select(x => new CatalogItemViewModel(x))
+            .OrderBy(x => x.Name)
+            .ToList());
     }
 }
