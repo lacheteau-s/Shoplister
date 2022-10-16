@@ -7,6 +7,14 @@ namespace Shoplister.Configuration;
 
 internal static class Startup
 {
+    public static MauiAppBuilder ConfigureRouting(this MauiAppBuilder builder)
+    {
+        Routing.RegisterRoute(Constants.Routing.Home, typeof(HomePage));
+        Routing.RegisterRoute(Constants.Routing.Catalog, typeof(CatalogPage));
+
+        return builder;
+    }
+
     public static MauiAppBuilder ConfigureServices(this MauiAppBuilder builder)
     {
         var services = builder.Services;
@@ -22,6 +30,9 @@ internal static class Startup
     {
         services.AddSingleton<HomePage>();
         services.AddSingleton<HomeViewModel>();
+
+        services.AddTransient<CatalogPage>();
+        services.AddTransient<CatalogViewModel>();
     }
 
     private static void RegisterServices(IServiceCollection services)

@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Shoplister.Models;
 using Shoplister.Stores;
 using System.Collections.ObjectModel;
 
@@ -32,18 +31,7 @@ public partial class HomeViewModel : ObservableObject
     [RelayCommand]
     public async Task AddItems()
     {
-        var num = Items.Any() ? Items.Max(i => i.Id) : 0;
-
-        var item = new Item
-        {
-            Name = $"Item {num + 1}",
-            Quantity = 1,
-            Checked = false
-        };
-
-        Items.Add(new ItemViewModel(item));
-
-        await _itemStore.AddItem(item);
+        await Shell.Current.GoToAsync(Constants.Routing.Catalog);
     }
 
     [RelayCommand]
