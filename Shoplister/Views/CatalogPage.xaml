@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:components="clr-namespace:Shoplister.Views.Components"
+             xmlns:constants="clr-namespace:Shoplister.Constants"
              x:Class="Shoplister.Views.CatalogPage"
+             Shell.NavBarIsVisible="False"
              Title="Catalog">
 
     <ContentPage.Behaviors>
@@ -12,15 +14,39 @@
             Command="{Binding LoadItemsCommand}" />
     </ContentPage.Behaviors>
 
-    <CollectionView ItemsSource="{Binding Items}"
-                    ItemSizingStrategy="MeasureFirstItem">
-        
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <components:CatalogItemView />
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
+    <Grid RowDefinitions="56,*">
+
+        <Grid Grid.Row="0"
+              Padding="5,0"
+              ColumnDefinitions="40,*"
+              BackgroundColor="{x:DynamicResource Primary}">
             
-    </CollectionView>
+            <Button Grid.Column="0"
+                    HeightRequest="40"
+                    WidthRequest="40"
+                    CornerRadius="20"
+                    Command="{Binding GoBackCommand}">
+                <Button.ImageSource>
+                    <FontImageSource FontFamily="mdi-fonts"
+                                     Glyph="{x:Static constants:MDIFonts.ArrowLeft}"
+                                     Size="24" />
+                </Button.ImageSource>
+            </Button>
+
+        </Grid>
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Items}"
+                        ItemSizingStrategy="MeasureFirstItem">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <components:CatalogItemView />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
     
 </ContentPage>

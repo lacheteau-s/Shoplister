@@ -27,4 +27,10 @@ public partial class CatalogViewModel : ObservableObject
             .OrderBy(x => x.Name)
             .ToList());
     }
+
+    [RelayCommand]
+    private async Task GoBack()
+    {
+        await Shell.Current.GoToAsync("..", true);
+    }
 }
