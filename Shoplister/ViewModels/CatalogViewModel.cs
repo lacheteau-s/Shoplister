@@ -10,7 +10,13 @@ public partial class CatalogViewModel : ObservableObject
     private readonly ItemStore _itemStore;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanClear))]
+    private string _searchQuery = string.Empty;
+
+    [ObservableProperty]
     private ObservableCollection<CatalogItemViewModel> _items = new();
+
+    public bool CanClear => !string.IsNullOrWhiteSpace(SearchQuery);
 
     public CatalogViewModel(ItemStore itemStore)
     {
@@ -26,6 +32,12 @@ public partial class CatalogViewModel : ObservableObject
             .Select(x => new CatalogItemViewModel(x))
             .OrderBy(x => x.Name)
             .ToList());
+    }
+
+    [RelayCommand]
+    private void ClearSearchQuery()
+    {
+        SearchQuery = string.Empty;
     }
 
     [RelayCommand]
