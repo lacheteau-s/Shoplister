@@ -10,4 +10,6 @@ public partial class MDIFonts
     public const string Minus = "\U000f0374";
 
     public const string Plus = "\U000f0415";
+
+    public const string PlusCircle = "\U000f0417";
 }

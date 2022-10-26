@@ -4,6 +4,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:components="clr-namespace:Shoplister.Views.Components"
              xmlns:constants="clr-namespace:Shoplister.Constants"
+             xmlns:converters="clr-namespace:Shoplister.Converters"
              x:Class="Shoplister.Views.CatalogPage"
              Shell.NavBarIsVisible="False"
              Title="Catalog">
@@ -14,8 +15,23 @@
             Command="{Binding LoadItemsCommand}" />
     </ContentPage.Behaviors>
 
-    <Grid RowDefinitions="56,*">
-
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="56" />
+            <RowDefinition>
+                <RowDefinition.Height>
+                    <Binding Path="HasSearchQuery">
+                        <Binding.Converter>
+                            <converters:BoolToValueConverter x:TypeArguments="x:Int32"
+                                                             TrueValue="50"
+                                                             FalseValue="0" />
+                        </Binding.Converter>
+                    </Binding>
+                </RowDefinition.Height>
+            </RowDefinition>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
         <Grid Grid.Row="0"
               Padding="5,0,10,0"
               ColumnDefinitions="40,*"
@@ -45,7 +61,7 @@
                 <Button Grid.Column="1"
                         BackgroundColor="Transparent"
                         Command="{Binding ClearSearchQueryCommand}"
-                        IsVisible="{Binding CanClear}">
+                        IsVisible="{Binding HasSearchQuery}">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="mdi-fonts"
                                          Color="DimGray"
@@ -57,7 +73,30 @@
 
         </Grid>
 
-        <CollectionView Grid.Row="1"
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,50"
+              Padding="10,0"
+              BackgroundColor="{x:DynamicResource Secondary}"
+              IsVisible="{Binding HasSearchQuery}">
+            
+            <Label Grid.Column="0"
+                   Text="{Binding SearchQuery, Mode=OneWay}"
+                   TextColor="{x:DynamicResource Tertiary}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start" />
+            
+            <Button Grid.Column="1"
+                    BackgroundColor="Transparent">
+                <Button.ImageSource>
+                    <FontImageSource FontFamily="mdi-fonts"
+                                     Glyph="{x:Static constants:MDIFonts.PlusCircle}"
+                                     Size="24"
+                                     Color="{x:DynamicResource Primary}" />
+                </Button.ImageSource>
+            </Button>
+        </Grid>
+
+        <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Items}"
                         ItemSizingStrategy="MeasureFirstItem">
 

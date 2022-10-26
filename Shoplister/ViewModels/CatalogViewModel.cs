@@ -10,13 +10,13 @@ public partial class CatalogViewModel : ObservableObject
     private readonly ItemStore _itemStore;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanClear))]
+    [NotifyPropertyChangedFor(nameof(HasSearchQuery))]
     private string _searchQuery = string.Empty;
 
     [ObservableProperty]
     private ObservableCollection<CatalogItemViewModel> _items = new();
 
-    public bool CanClear => !string.IsNullOrWhiteSpace(SearchQuery);
+    public bool HasSearchQuery => !string.IsNullOrWhiteSpace(SearchQuery);
 
     public CatalogViewModel(ItemStore itemStore)
     {
