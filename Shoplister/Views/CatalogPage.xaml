@@ -35,29 +35,9 @@
         <components:CatalogHeaderView Grid.Row="0"
                                       BindingContext="{Binding}" />
 
-        <Grid Grid.Row="1"
-              ColumnDefinitions="*,50"
-              Padding="10,0"
-              BackgroundColor="{x:DynamicResource Secondary}"
-              IsVisible="{Binding HasSearchQuery}">
-            
-            <Label Grid.Column="0"
-                   Text="{Binding SearchQuery, Mode=OneWay}"
-                   TextColor="{x:DynamicResource Tertiary}"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start" />
-            
-            <Button Grid.Column="1"
-                    BackgroundColor="Transparent"
-                    Command="{Binding AddNewItemCommand}">
-                <Button.ImageSource>
-                    <FontImageSource FontFamily="mdi-fonts"
-                                     Glyph="{x:Static constants:MDIFonts.PlusCircle}"
-                                     Size="24"
-                                     Color="{x:DynamicResource Primary}" />
-                </Button.ImageSource>
-            </Button>
-        </Grid>
+        <components:CatalogNewItemView Grid.Row="1"
+                                       BindingContext="{Binding}"
+                                       IsVisible="{Binding HasSearchQuery}" />
 
         <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Items}"
