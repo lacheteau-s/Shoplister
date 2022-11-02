@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Shoplister.Models;
 using Shoplister.Stores;
 using System.Collections.ObjectModel;
 
@@ -30,8 +31,20 @@ public partial class CatalogViewModel : ObservableObject
 
         Items = new (items
             .Select(x => new CatalogItemViewModel(x))
-            .OrderBy(x => x.Name)
+            .OrderByDescending(x => x.CreationDate)
             .ToList());
+    }
+
+    [RelayCommand]
+    private async Task AddNewItem()
+    {
+        var item = new Item { Name = SearchQuery, Quantity = 1 };
+
+        await _itemStore.AddItem(item);
+
+        ClearSearchQuery();
+
+        await LoadItems();
     }
 
     [RelayCommand]

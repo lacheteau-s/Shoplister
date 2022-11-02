@@ -86,7 +86,8 @@
                    HorizontalOptions="Start" />
             
             <Button Grid.Column="1"
-                    BackgroundColor="Transparent">
+                    BackgroundColor="Transparent"
+                    Command="{Binding AddNewItemCommand}">
                 <Button.ImageSource>
                     <FontImageSource FontFamily="mdi-fonts"
                                      Glyph="{x:Static constants:MDIFonts.PlusCircle}"

@@ -11,6 +11,8 @@ public partial class CatalogItemViewModel : ObservableObject
 
     public int Quantity => _model.Quantity;
 
+    public DateTime CreationDate => _model.CreationDate;
+
     public CatalogItemViewModel(Item item)
     {
         _model = item;

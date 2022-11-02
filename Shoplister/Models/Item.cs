@@ -13,4 +13,6 @@ public record Item
     public int Quantity { get; set; }
 
     public bool Checked { get; set; }
+
+    public DateTime CreationDate { get; set; } = DateTime.Now;
 }
