@@ -1,11 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shoplister.Models;
+using Shoplister.Stores;
 
 namespace Shoplister.ViewModels;
 
 public partial class CatalogItemViewModel : ObservableObject
 {
+    private readonly ItemStore _itemStore;
+
     private readonly Item _model;
 
     [ObservableProperty]
@@ -15,24 +18,29 @@ public partial class CatalogItemViewModel : ObservableObject
 
     public DateTime CreationDate => _model.CreationDate;
 
-    public CatalogItemViewModel(Item item)
+    public CatalogItemViewModel(Item item, ItemStore itemStore)
     {
+        _itemStore = itemStore;
         _model = item;
 
         Quantity = _model.Quantity;
     }
 
     [RelayCommand]
-    private void IncrementQuantity()
+    private async Task IncrementQuantity()
     {
-        Quantity++;
+        _model.Quantity = ++Quantity;
+
+        await _itemStore.UpdateItem(_model);
     }
 
     [RelayCommand]
-    private void DecrementQuantity()
+    private async Task DecrementQuantity()
     {
         if (Quantity == 0) return;
 
-        Quantity--;
+        _model.Quantity = --Quantity;
+
+        await _itemStore.UpdateItem(_model);
     }
 }

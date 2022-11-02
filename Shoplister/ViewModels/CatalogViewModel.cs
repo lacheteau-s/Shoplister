@@ -30,7 +30,7 @@ public partial class CatalogViewModel : ObservableObject
         var items = await _itemStore.GetItems();
 
         Items = new (items
-            .Select(x => new CatalogItemViewModel(x))
+            .Select(x => new CatalogItemViewModel(x, _itemStore))
             .OrderByDescending(x => x.CreationDate)
             .ToList());
     }
