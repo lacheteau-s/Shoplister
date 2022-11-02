@@ -31,47 +31,9 @@
             </RowDefinition>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="0"
-              Padding="5,0,10,0"
-              ColumnDefinitions="40,*"
-              BackgroundColor="{x:DynamicResource Primary}">
-            
-            <Button Grid.Column="0"
-                    HeightRequest="40"
-                    WidthRequest="40"
-                    CornerRadius="20"
-                    Command="{Binding GoBackCommand}">
-                <Button.ImageSource>
-                    <FontImageSource FontFamily="mdi-fonts"
-                                     Glyph="{x:Static constants:MDIFonts.ArrowLeft}"
-                                     Size="24" />
-                </Button.ImageSource>
-            </Button>
-            <Grid Grid.Column="1"
-                  ColumnDefinitions="*,40"
-                  Padding="5,0,0,0"
-                  HeightRequest="40"
-                  BackgroundColor="White">
-                
-                <Entry Grid.Column="0"
-                       Placeholder="I need..."
-                       Text="{Binding SearchQuery, Mode=TwoWay}" />
 
-                <Button Grid.Column="1"
-                        BackgroundColor="Transparent"
-                        Command="{Binding ClearSearchQueryCommand}"
-                        IsVisible="{Binding HasSearchQuery}">
-                    <Button.ImageSource>
-                        <FontImageSource FontFamily="mdi-fonts"
-                                         Color="DimGray"
-                                         Glyph="{x:Static constants:MDIFonts.Cross}"
-                                         Size="24" />
-                    </Button.ImageSource>
-                </Button>
-            </Grid>
-
-        </Grid>
+        <components:CatalogHeaderView Grid.Row="0"
+                                      BindingContext="{Binding}" />
 
         <Grid Grid.Row="1"
               ColumnDefinitions="*,50"
