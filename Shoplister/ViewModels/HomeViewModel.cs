@@ -23,6 +23,7 @@ public partial class HomeViewModel : ObservableObject
         var items = await _itemStore.GetItems();
 
         Items = new (items
+            .Where(m => m.Quantity > 0)
             .Select(m => new HomeItemViewModel(m))
             .OrderBy(m => m.Checked)
             .ToList());
