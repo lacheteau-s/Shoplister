@@ -41,6 +41,8 @@ public partial class CatalogItemViewModel : ObservableObject
 
         _model.Quantity = --Quantity;
 
+        if (Quantity == 0) _model.Checked = false;
+
         await _itemStore.UpdateItem(_model);
     }
 }

@@ -51,6 +51,13 @@ namespace Shoplister.Stores
             return await _connection.UpdateAsync(item);
         }
 
+        public async Task<int> UpdateItems(IEnumerable<Item> items)
+        {
+            await _initializer;
+
+            return await _connection.UpdateAllAsync(items);
+        }
+
         public async Task<int> DeleteItem(Item item)
         {
             await _initializer;
