@@ -3,7 +3,7 @@ using Shoplister.Models;
 
 namespace Shoplister.ViewModels;
 
-public partial class ItemViewModel : ObservableObject
+public partial class HomeItemViewModel : ObservableObject
 {
     private readonly Item _model;
 
@@ -16,7 +16,7 @@ public partial class ItemViewModel : ObservableObject
 
     public int Quantity => _model.Quantity;
 
-    public ItemViewModel(Item model)
+    public HomeItemViewModel(Item model)
     {
         _model = model;
 

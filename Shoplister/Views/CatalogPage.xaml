@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:components="clr-namespace:Shoplister.Views.Components"
+             xmlns:constants="clr-namespace:Shoplister.Constants"
+             xmlns:converters="clr-namespace:Shoplister.Converters"
              x:Class="Shoplister.Views.CatalogPage"
+             Shell.NavBarIsVisible="False"
              Title="Catalog">
 
     <ContentPage.Behaviors>
@@ -12,15 +15,42 @@
             Command="{Binding LoadItemsCommand}" />
     </ContentPage.Behaviors>
 
-    <CollectionView ItemsSource="{Binding Items}"
-                    ItemSizingStrategy="MeasureFirstItem">
-        
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <components:CatalogItemView />
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-            
-    </CollectionView>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="56" />
+            <RowDefinition>
+                <RowDefinition.Height>
+                    <Binding Path="HasSearchQuery">
+                        <Binding.Converter>
+                            <converters:BoolToValueConverter x:TypeArguments="x:Int32"
+                                                             TrueValue="50"
+                                                             FalseValue="0" />
+                        </Binding.Converter>
+                    </Binding>
+                </RowDefinition.Height>
+            </RowDefinition>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <components:CatalogHeaderView Grid.Row="0"
+                                      BindingContext="{Binding}" />
+
+        <components:CatalogNewItemView Grid.Row="1"
+                                       BindingContext="{Binding}"
+                                       IsVisible="{Binding HasSearchQuery}" />
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Items}"
+                        ItemSizingStrategy="MeasureFirstItem">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <components:CatalogItemView />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
     
 </ContentPage>

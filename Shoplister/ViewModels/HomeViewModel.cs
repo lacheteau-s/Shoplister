@@ -10,7 +10,7 @@ public partial class HomeViewModel : ObservableObject
     private readonly ItemStore _itemStore;
 
     [ObservableProperty]
-    private ObservableCollection<ItemViewModel> _items = new ();
+    private ObservableCollection<HomeItemViewModel> _items = new ();
 
     public HomeViewModel(ItemStore itemStore)
     {
@@ -23,7 +23,7 @@ public partial class HomeViewModel : ObservableObject
         var items = await _itemStore.GetItems();
 
         Items = new (items
-            .Select(m => new ItemViewModel(m))
+            .Select(m => new HomeItemViewModel(m))
             .OrderBy(m => m.Checked)
             .ToList());
     }
@@ -43,7 +43,7 @@ public partial class HomeViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task CheckItem(ItemViewModel item)
+    public async Task CheckItem(HomeItemViewModel item)
     {
         item.Checked = !item.Checked;
 
@@ -58,7 +58,7 @@ public partial class HomeViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task DeleteItem(ItemViewModel item)
+    public async Task DeleteItem(HomeItemViewModel item)
     {
         Items.Remove(item);
 
