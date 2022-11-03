@@ -13,6 +13,8 @@ public partial class CatalogItemViewModel : ObservableObject
 
     [ObservableProperty]
     private int _quantity;
+
+    public int Id => _model.Id;
     
     public string Name => _model.Name;
 

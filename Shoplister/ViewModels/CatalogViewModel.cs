@@ -48,6 +48,17 @@ public partial class CatalogViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task DeleteItem(CatalogItemViewModel item)
+    {
+        Items.Remove(item);
+
+        var model = await _itemStore.GetItem(item.Id);
+
+        if (model != null)
+            await _itemStore.DeleteItem(model);
+    }
+
+    [RelayCommand]
     private void ClearSearchQuery()
     {
         SearchQuery = string.Empty;
