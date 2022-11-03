@@ -40,12 +40,24 @@
                                        IsVisible="{Binding HasSearchQuery}" />
 
         <CollectionView Grid.Row="2"
+                        x:Name="collectionView"
                         ItemsSource="{Binding Items}"
                         ItemSizingStrategy="MeasureFirstItem">
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <components:CatalogItemView />
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem BackgroundColor="Red"
+                                           Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.DeleteItemCommand}"
+                                           CommandParameter="{Binding}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <components:CatalogItemView BackgroundColor="White" />
+
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
 

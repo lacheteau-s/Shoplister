@@ -30,7 +30,7 @@ public partial class CatalogViewModel : ObservableObject
         var items = await _itemStore.GetItems();
 
         Items = new (items
-            .Select(x => new CatalogItemViewModel(x))
+            .Select(x => new CatalogItemViewModel(x, _itemStore))
             .OrderByDescending(x => x.CreationDate)
             .ToList());
     }
@@ -45,6 +45,17 @@ public partial class CatalogViewModel : ObservableObject
         ClearSearchQuery();
 
         await LoadItems();
+    }
+
+    [RelayCommand]
+    private async Task DeleteItem(CatalogItemViewModel item)
+    {
+        Items.Remove(item);
+
+        var model = await _itemStore.GetItem(item.Id);
+
+        if (model != null)
+            await _itemStore.DeleteItem(model);
     }
 
     [RelayCommand]
