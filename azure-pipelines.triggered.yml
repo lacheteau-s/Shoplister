@@ -1,0 +1,13 @@
+pool:
+  name: Default
+
+trigger: none
+
+resources:
+  pipelines:
+  - pipeline: triggered
+    source: Triggering
+    trigger: true
+
+steps:
+- script: echo "This pipeline was triggered"
