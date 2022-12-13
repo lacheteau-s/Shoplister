@@ -1,0 +1,19 @@
+trigger:
+- feat/pipelines
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: PowerShell@2
+  inputs:
+    targetType: inline
+    script: echo "Start"
+- task: PowerShell@2
+  inputs:
+    targetType: inline
+    script: Start-Sleep -Seconds 10
+- task: PowerShell@2
+  inputs:
+    targetType: inline
+    script: echo "END"
