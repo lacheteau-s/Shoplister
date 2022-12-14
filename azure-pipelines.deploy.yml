@@ -24,9 +24,9 @@ steps:
   inputs:
     SourceFolder: $(Pipeline.Workspace)
     Contents: "**/*.apk"
-    TargetFolder: "D:/Libraries/OneDrive/Tech"
+    TargetFolder: "D:/Libraries/OneDrive/Apps/Shoplister"
     CleanTargetFolder: true
     OverWrite: true
     flattenFolders: true
 
-- script: ren D:\Libraries\OneDrive\Tech\*-Signed.apk *-$(Build.BuildNumber).apk
+- script: ren D:\Libraries\OneDrive\Apps\Shoplister\*-Signed.apk *-$(Build.BuildNumber).apk
