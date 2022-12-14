@@ -2,7 +2,7 @@ trigger:
 - feat/pipelines
 
 pool:
-  vmImage: windows-latest
+  name: Default
 
 steps:
 - task: DownloadSecureFile@1

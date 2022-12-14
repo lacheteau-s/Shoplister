@@ -28,3 +28,5 @@ steps:
     CleanTargetFolder: true
     OverWrite: true
     flattenFolders: true
+
+- script: ren D:\Libraries\OneDrive\Tech\*-Signed.apk *-$(Build.BuildNumber).apk
