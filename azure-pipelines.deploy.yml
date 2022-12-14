@@ -5,16 +5,17 @@ trigger: none
 
 resources:
   pipelines:
-  - pipeline: triggered
-    source: Triggering
+  - pipeline: build
+    source: Build
     trigger: true
 
 steps:
 - task: DownloadPipelineArtifact@2
+  displayName: Download pipeline artifact
   inputs:
     source: specific
     project: Shoplister
-    pipeline: 10
+    pipeline: 16
     runVersion: latest
     artifact: app
     patterns: "*.apk"
@@ -30,3 +31,4 @@ steps:
     flattenFolders: true
 
 - script: ren D:\Libraries\OneDrive\Apps\Shoplister\*-Signed.apk *-$(Build.BuildNumber).apk
+  displayName: Append build number
