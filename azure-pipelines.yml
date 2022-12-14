@@ -5,15 +5,41 @@ pool:
   vmImage: windows-latest
 
 steps:
-- task: PowerShell@2
+- task: DownloadSecureFile@1
+  displayName: Download Android keystore
+  name: KeyStore
   inputs:
-    targetType: inline
-    script: echo "Start"
-- task: PowerShell@2
+    secureFile: dev.keystore
+
+- task: AzureKeyVault@2
+  displayName: "Azure Key Vault: androidKeyVault"
   inputs:
-    targetType: inline
-    script: Start-Sleep -Seconds 10
-- task: PowerShell@2
+    azureSubscription: Main subscription (5b1c61ef-b305-4f34-b285-f550cccf2cf7)
+    KeyVaultName: androidKeyVault
+
+- task: DotNetCoreCLI@2
+  displayName: Publish - Release
   inputs:
-    targetType: inline
-    script: echo "END"
+    command: publish
+    publishWebProjects: false
+    projects: Shoplister/Shoplister.csproj
+    arguments: "-f:net6.0-android -c:Release /p:AndroidSigningKeyStore=$(KeyStore.secureFilePath) /p:AndroidSigningKeyPass=$(SigningPassword) /p:AndroidSigningStorePass=$(SigningPassword)"
+    zipAfterPublish: false
+    modifyOutputPath: false
+
+- task: CopyFiles@2
+  displayName: "Copy files to: $(Build.ArtifactStagingDirectory)"
+  inputs:
+    SourceFolder: $(System.DefaultWorkingDirectory)
+    Contents: "**/publish/*-Signed.apk"
+    TargetFolder: $(Build.ArtifactStagingDirectory)
+    CleanTargetFolder: true
+    OverWrite: true
+    flattenFolders: true
+
+- task: PublishPipelineArtifact@1
+  displayName: Publish pipeline artifact
+  inputs:
+    targetPath: $(Build.ArtifactStagingDirectory)
+    publishLocation: pipeline
+    artifact: app
