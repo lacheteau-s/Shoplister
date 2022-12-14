@@ -1,5 +1,5 @@
 trigger:
-- feat/pipelines
+- release/*
 
 pool:
   name: Default
