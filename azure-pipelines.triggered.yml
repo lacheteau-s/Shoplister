@@ -10,4 +10,21 @@ resources:
     trigger: true
 
 steps:
-- script: echo "This pipeline was triggered"
+- task: DownloadPipelineArtifact@2
+  inputs:
+    source: specific
+    project: Shoplister
+    pipeline: 10
+    runVersion: latest
+    artifact: app
+    patterns: "*.apk"
+
+- task: CopyFiles@2
+  displayName: Copy APK to OneDrive
+  inputs:
+    SourceFolder: $(Pipeline.Workspace)
+    Contents: "**/*.apk"
+    TargetFolder: "D:/Libraries/OneDrive/Tech"
+    CleanTargetFolder: true
+    OverWrite: true
+    flattenFolders: true
