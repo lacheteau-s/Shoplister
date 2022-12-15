@@ -1,0 +1,34 @@
+pool:
+  name: Default
+
+trigger: none
+
+resources:
+  pipelines:
+  - pipeline: build
+    source: Build
+    trigger: true
+
+steps:
+- task: DownloadPipelineArtifact@2
+  displayName: Download pipeline artifact
+  inputs:
+    source: specific
+    project: Shoplister
+    pipeline: 16
+    runVersion: latest
+    artifact: app
+    patterns: "*.apk"
+
+- task: CopyFiles@2
+  displayName: Copy APK to OneDrive
+  inputs:
+    SourceFolder: $(Pipeline.Workspace)
+    Contents: "**/*.apk"
+    TargetFolder: "D:/Libraries/OneDrive/Apps/Shoplister"
+    CleanTargetFolder: true
+    OverWrite: true
+    flattenFolders: true
+
+- script: ren D:\Libraries\OneDrive\Apps\Shoplister\*-Signed.apk *-$(Build.BuildNumber).apk
+  displayName: Append build number

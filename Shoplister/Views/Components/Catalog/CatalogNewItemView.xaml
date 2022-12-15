@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:constants="clr-namespace:Shoplister.Constants"
+             x:Class="Shoplister.Views.Components.CatalogNewItemView">
+
+    <Grid ColumnDefinitions="*,50"
+          Padding="10,0"
+          BackgroundColor="{x:DynamicResource Secondary}">
+
+        <Label Grid.Column="0"
+               Text="{Binding SearchQuery, Mode=OneWay}"
+               TextColor="{x:DynamicResource Tertiary}"
+               VerticalOptions="Center"
+               HorizontalOptions="Start" />
+
+        <Button Grid.Column="1"
+                BackgroundColor="Transparent"
+                Command="{Binding AddNewItemCommand}">
+            <Button.ImageSource>
+                <FontImageSource FontFamily="mdi-fonts"
+                                 Glyph="{x:Static constants:MDIFonts.PlusCircle}"
+                                 Size="24"
+                                 Color="{x:DynamicResource Primary}" />
+            </Button.ImageSource>
+        </Button>
+    </Grid>
+
+</ContentView>

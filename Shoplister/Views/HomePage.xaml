@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:Shoplister.Views.Components"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Shoplister.Views.HomePage">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Appearing"
+                                        Command="{Binding LoadItemsCommand}" />
+    </ContentPage.Behaviors>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="ADD" Command="{Binding AddItemsCommand}" />
+        <ToolbarItem Text="CLEAR" Command="{Binding ClearItemsCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <SwipeView>
+            
+            <CollectionView x:Name="collectionView"
+                            ItemsSource="{Binding Items}"
+                            ItemSizingStrategy="MeasureFirstItem">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem BackgroundColor="Green"
+                                               Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.CheckItemCommand}"
+                                               CommandParameter="{Binding}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem BackgroundColor="Red"
+                                               Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.DeleteItemCommand}"
+                                               CommandParameter="{Binding}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <components:HomeItemView BackgroundColor="White" />
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <components:EmptyView />
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+        </SwipeView>
+    </Grid>
+
+</ContentPage>
