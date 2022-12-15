@@ -13,7 +13,7 @@
 		<ApplicationTitle>Shoplister</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.shoplister</ApplicationId>
+		<ApplicationId>com.sullifornia.shoplister</ApplicationId>
 		<ApplicationIdGuid>B43BC382-A6F6-4B8D-AFCD-08E198F8D151</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -21,6 +21,14 @@
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
+		<AndroidKeyStore>True</AndroidKeyStore>
+		<AndroidSigningKeyStore></AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>shoplister</AndroidSigningKeyAlias>
+		<AndroidSigningKeyPass></AndroidSigningKeyPass>
+		<AndroidSigningStorePass></AndroidSigningStorePass>
 	</PropertyGroup>
 
 	<ItemGroup>
